@@ -62,11 +62,13 @@ async function run() {
       const notice = await NoticeCollection.findOne(query);
       res.send(notice);
     });
+
+    // Move app.listen here
+    app.listen(port, () => {
+      console.log(`Simple node server running on port ${port}`);
+    });
   } finally {
   }
 }
-run().catch(console.dir);
 
-app.listen(port, () => {
-  console.log(`Simple node server running on port ${port}`);
-});
+run().catch(console.dir);
