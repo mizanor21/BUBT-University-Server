@@ -8,9 +8,8 @@ app.use(cors());
 app.use(express.json());
 
 const uri =
-  "mongodb+srv://bubt-university:pFULJBAgL7SQ3gJ1@cluster0.disah5t.mongodb.net/?retryWrites=true&w=majority";
+  "mongodb+srv://bubtUniversity:WzDM8iLo8TMkHTtR@cluster0.disah5t.mongodb.net/bubtDB?retryWrites=true&w=majority";
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -22,6 +21,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const NoticeCollection = client.db("bubtDB").collection("notice");
+    const EventCollection = client.db("bubtDB").collection("event");
 
     app.get("/notice-general", async (req, res) => {
       const query = { category: "general" };
@@ -61,6 +61,25 @@ async function run() {
       const query = { _id: new ObjectId(id) };
       const notice = await NoticeCollection.findOne(query);
       res.send(notice);
+    });
+
+    app.get("/events", async (req, res) => {
+      const query = {};
+      const options = {
+        sort: { eventId: -1 },
+        projection: {
+          _id: false,
+          title: true,
+          eventId: true,
+          eventDate: true,
+          eventTime: true,
+          img: true,
+          createdAt: true,
+        },
+      };
+      const cursor = EventCollection.find(query, options);
+      const events = await cursor.limit(5).toArray();
+      res.send(events);
     });
 
     // Move app.listen here
