@@ -22,6 +22,7 @@ async function run() {
   try {
     const NoticeCollection = client.db("bubtDB").collection("notice");
     const EventCollection = client.db("bubtDB").collection("event");
+    const Department = client.db("bubtDB").collection("department");
 
     app.get("/notice-general", async (req, res) => {
       const query = { category: "general" };
@@ -86,6 +87,13 @@ async function run() {
       const query = { _id: new ObjectId(id) };
       const event = await EventCollection.findOne(query);
       res.send(event);
+    });
+
+    app.get("/department", async (req, res) => {
+      const query = {};
+      const cursor = Department.find(query);
+      const department = await cursor.toArray();
+      res.send(department);
     });
     // Move app.listen here
     app.listen(port, () => {
