@@ -68,7 +68,6 @@ async function run() {
       const options = {
         sort: { eventId: -1 },
         projection: {
-          _id: false,
           title: true,
           eventId: true,
           eventDate: true,
@@ -82,6 +81,12 @@ async function run() {
       res.send(events);
     });
 
+    app.get("/event-details/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const event = await EventCollection.findOne(query);
+      res.send(event);
+    });
     // Move app.listen here
     app.listen(port, () => {
       console.log(`Simple node server running on port ${port}`);
