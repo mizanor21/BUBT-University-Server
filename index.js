@@ -23,6 +23,7 @@ async function run() {
     const NoticeCollection = client.db("bubtDB").collection("notice");
     const EventCollection = client.db("bubtDB").collection("event");
     const Department = client.db("bubtDB").collection("department");
+    const Alumni = client.db("bubtDB").collection("alumni");
 
     app.get("/notice-general", async (req, res) => {
       const query = { category: "general" };
@@ -94,6 +95,25 @@ async function run() {
       const cursor = Department.find(query);
       const department = await cursor.toArray();
       res.send(department);
+    });
+    app.get("/alumni", async (req, res) => {
+      const query = {};
+      const options = {
+        sort: { embedId: 1 },
+      };
+      const cursor = Alumni.find(query, options);
+      const alumni = await cursor.limit(4).toArray();
+      res.send(alumni);
+    });
+
+    app.get("/all-stories", async (req, res) => {
+      const query = {};
+      const options = {
+        sort: { embedId: 1 },
+      };
+      const cursor = Alumni.find(query, options);
+      const alumni = await cursor.toArray();
+      res.send(alumni);
     });
     // Move app.listen here
     app.listen(port, () => {
