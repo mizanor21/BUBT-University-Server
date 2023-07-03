@@ -120,7 +120,7 @@ async function run() {
     app.get("/faculty", async (req, res) => {
       const query = {};
       const options = {
-        sort: { facultyId: -1 },
+        sort: { createdAt: 1 },
         projection: {
           img: true,
           name: true,
