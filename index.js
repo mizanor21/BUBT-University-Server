@@ -133,6 +133,14 @@ async function run() {
       const faculty = await cursor.toArray();
       res.send(faculty);
     });
+
+    app.get("/faculty-details/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const faculty = await FacultyCollection.findOne(query);
+      res.send(faculty);
+    });
+
     // Move app.listen here
     app.listen(port, () => {
       console.log(`Simple node server running on port ${port}`);
