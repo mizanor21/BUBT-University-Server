@@ -26,6 +26,10 @@ async function run() {
     const Alumni = client.db("bubtDB").collection("alumni");
     const FacultyCollection = client.db("bubtDB").collection("faculty");
 
+    app.get("/", (req, res) => {
+      res.send("Node Server Running");
+    });
+
     app.get("/notice-general", async (req, res) => {
       const query = { category: "general" };
       const options = {
