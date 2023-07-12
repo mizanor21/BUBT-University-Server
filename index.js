@@ -26,6 +26,7 @@ async function run() {
     const Alumni = client.db("bubtDB").collection("alumni");
     const FacultyCollection = client.db("bubtDB").collection("faculty");
     const ClassRoutine = client.db("bubtDB").collection("classRoutine");
+    const ExamSchedule = client.db("bubtDB").collection("examSchedule");
 
     app.get("/", (req, res) => {
       res.send("BUBT Server Running");
@@ -162,6 +163,18 @@ async function run() {
       res.send(routine);
     });
 
+    app.get("/exam-schedule", async (req, res) => {
+      const query = {};
+      const examSchedule = await ExamSchedule.find(query).toArray();
+      res.send(examSchedule);
+    });
+
+    app.get("/exam-schedule/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const examSchedule = await ExamSchedule.findOne(query);
+      res.send(examSchedule);
+    });
     // Move app.listen here
     app.listen(port, () => {
       console.log(`Simple node server running on port ${port}`);
