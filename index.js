@@ -25,9 +25,10 @@ async function run() {
     const Department = client.db("bubtDB").collection("department");
     const Alumni = client.db("bubtDB").collection("alumni");
     const FacultyCollection = client.db("bubtDB").collection("faculty");
+    const ClassRoutine = client.db("bubtDB").collection("classRoutine");
 
     app.get("/", (req, res) => {
-      res.send("Node Server Running");
+      res.send("BUBT Server Running");
     });
 
     app.get("/notice-general", async (req, res) => {
@@ -143,6 +144,22 @@ async function run() {
       const query = { _id: new ObjectId(id) };
       const faculty = await FacultyCollection.findOne(query);
       res.send(faculty);
+    });
+
+    app.get("/class-routine", async (req, res) => {
+      const query = {};
+      const options = {
+        sort: { routineId: 1 },
+      };
+      const routine = await ClassRoutine.find(query, options).toArray();
+      res.send(routine);
+    });
+
+    app.get("/class-routine/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const routine = await ClassRoutine.findOne(query);
+      res.send(routine);
     });
 
     // Move app.listen here
