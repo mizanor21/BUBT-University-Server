@@ -27,6 +27,9 @@ async function run() {
     const FacultyCollection = client.db("bubtDB").collection("faculty");
     const ClassRoutine = client.db("bubtDB").collection("classRoutine");
     const ExamSchedule = client.db("bubtDB").collection("examSchedule");
+    const SupleExamSchedule = client
+      .db("bubtDB")
+      .collection("suplementaryExamSchedule");
 
     app.get("/", (req, res) => {
       res.send("BUBT Server Running");
@@ -175,6 +178,13 @@ async function run() {
       const examSchedule = await ExamSchedule.findOne(query);
       res.send(examSchedule);
     });
+
+    app.get("/supplementary-exam-schedule", async (req, res) => {
+      const query = {};
+      const supplementary = await SupleExamSchedule.find(query).toArray();
+      res.send(supplementary);
+    });
+
     // Move app.listen here
     app.listen(port, () => {
       console.log(`Simple node server running on port ${port}`);
