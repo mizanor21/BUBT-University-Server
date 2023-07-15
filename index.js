@@ -22,7 +22,7 @@ async function run() {
   try {
     const NoticeCollection = client.db("bubtDB").collection("notice");
     const EventCollection = client.db("bubtDB").collection("event");
-    const Department = client.db("bubtDB").collection("department");
+    const DegreeOffering = client.db("bubtDB").collection("degreeOffering");
     const Alumni = client.db("bubtDB").collection("alumni");
     const FacultyCollection = client.db("bubtDB").collection("faculty");
     const ClassRoutine = client.db("bubtDB").collection("classRoutine");
@@ -100,12 +100,20 @@ async function run() {
       res.send(event);
     });
 
-    app.get("/department", async (req, res) => {
+    app.get("/degree-offering", async (req, res) => {
       const query = {};
-      const cursor = Department.find(query);
+      const cursor = DegreeOffering.find(query);
       const department = await cursor.toArray();
       res.send(department);
     });
+
+    app.get("/program-details/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const programDetails = await DegreeOffering.findOne(query);
+      res.send(programDetails);
+    });
+
     app.get("/alumni", async (req, res) => {
       const query = {};
       const options = {
